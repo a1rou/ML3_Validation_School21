@@ -1,3 +1,33 @@
+# Оценка качества модели: валидация, отбор признаков, подбор гиперпараметров
+
+Учебный проект по курсу ML (School 21). Задача: предсказание цены аренды квартиры (регрессия, данные Kaggle Two Sigma Connect: RentHop). Проект посвящён корректной оценке качества моделей и предотвращению утечек данных. Весь код реализован вручную и сверен с sklearn.
+
+
+## Что сделано
+
+Предобработка: очистка признаков из features, 20 бинарных признаков (Elevator, Doorman, NoFee и др.), отсечение выбросов цены по 1% и 99% квантилям.
+Разбиения выборки: случайные и по дате (2 и 3 части), с детерминированностью через random_state.
+Схемы кросс-валидации, написанные с нуля: K-Fold, Group K-Fold, Stratified K-Fold, TimeSeriesSplit. Результаты сравнены с sklearn.
+Отбор признаков для Lasso (разбиение 60/20/20 по времени), top-10 признаков:
+по весам Lasso;
+по доле NaN и корреляции;
+по собственной permutation importance;
+по SHAP.
+Сравнение методов отбора по скорости, метрикам и стабильности (индекс Жаккара на подвыборках).
+Подбор гиперпараметров alpha и l1_ratio для ElasticNet: собственные Grid Search и Random Search, Optuna (TPE), Optuna поверх TimeSeriesSplit.
+Теоретические ответы: leave-one-out, Grid, Random и Bayesian search, классификация методов отбора признаков, Pearson, χ², Lasso, permutation importance, SHAP.
+
+## Стек
+
+Python, pandas, numpy, scikit-learn, SHAP, Optuna, Jupyter
+
+
+## Результат
+
+Метрики: MAE, RMSE, R² на train, validation и test.
+Итоговая модель: ElasticNet на top-10 признаках по SHAP, гиперпараметры подобраны на валидации и через CV.
+Сводные таблицы сравнения схем валидации, методов отбора и методов подбора гиперпараметров находятся в ноутбуке.
+
 # Model quality estimation
 
 Summary: This project discusses different validation techniques. We will discuss how to correctly measure model quality and avoid leaks. We also consider several ways to optimize model hyperparameters and various methods of feature selection.
